@@ -168,6 +168,32 @@
       }, true);
     }
 
+    let servicesContainer = select('.services-container');
+    if (servicesContainer) {
+      let servicesIsotope = new Isotope(servicesContainer, {
+        filter: '.filter-all',
+        itemSelector: '.services-item',
+        layoutMode: 'fitRows'
+      });
+
+      let servicesFilters = select('#services-filters li', true);
+
+      on('click', '#services-filters li', function(e) {
+        e.preventDefault();
+        servicesFilters.forEach(function(el) {
+          el.classList.remove('filter-active');
+        });
+        this.classList.add('filter-active');
+
+        servicesIsotope.arrange({
+          filter: this.getAttribute('data-filter')
+        });
+        servicesIsotope.on('arrangeComplete', function() {
+          AOS.refresh()
+        });
+      }, true);
+    }
+
   });
 
   /**
